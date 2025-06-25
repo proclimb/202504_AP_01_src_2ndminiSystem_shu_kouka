@@ -60,8 +60,8 @@ session_destroy();
             <input type="hidden" name="birth_day" value="<?php echo $_POST['birth_day'] ?>">
             <input type="hidden" name="postal_code" value="<?php echo $_POST['postal_code'] ?>">
             <input type="hidden" name="prefecture" value="<?php echo $_POST['prefecture'] ?>">
-            <input type="hidden" name="city_town" value="<?php echo $_POST['city_town'] ?>">
-            <input type="hidden" name="building" value="<?php echo $_POST['building'] ?>">
+            <input type="hidden" name="city_town" value="<?php echo htmlspecialchars($_POST['city_town']) ?>">
+            <input type="hidden" name="building" value="<?php echo htmlspecialchars($_POST['building']) ?>">
             <input type="hidden" name="tel" value="<?php echo $_POST['tel'] ?>">
             <input type="hidden" name="email" value="<?php echo $_POST['email'] ?>">
             <h1 class="contact-title">登録内容入力</h1>
