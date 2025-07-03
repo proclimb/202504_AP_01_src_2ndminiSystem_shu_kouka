@@ -14,6 +14,14 @@ class Validator
             $this->error_message['name'] = '名前が入力されていません';
         } elseif (mb_strlen($data['name']) > 20) {
             $this->error_message['name'] = '名前は20文字以内で入力してください';
+        } elseif (!preg_match('/^[\p{Han}\p{Hiragana}\p{Katakana}ー－〜～ー々〆〤\s]+$/u', $data['name'])) {
+            $this->error_message['name'] = '入力できるのは漢字・ひらがな・カタカナのみです';
+        } elseif (preg_match('/^\s|　|\s$|　$/u', $data['name'])) {
+            $this->error_message['name'] = '名前の前後に空白を入れないでください';
+        } elseif (preg_match('/^\s+$/u', $data['name'])) {
+            $this->error_message['name'] = '名前に空白だけを入力することはできません';
+        } elseif (preg_match('/[ゐゑヰヱ]/u', $data['name'])) {
+            $this->error_message['name'] = '旧仮名遣い（ゐ・ゑなど）は使用できません';
         }
 
         // ふりがな
@@ -31,6 +39,14 @@ class Validator
             $this->error_message['birth_date'] = '生年月日が入力されていません';
         } elseif (!$this->isValidDate($data['birth_year'] ?? '', $data['birth_month'] ?? '', $data['birth_day'] ?? '')) {
             $this->error_message['birth_date'] = '生年月日が正しくありません';
+        } else {
+            $birth_date_str = sprintf('%04d-%02d-%02d', $data['birth_year'], $data['birth_month'], $data['birth_day']);
+            $birth_date = DateTime::createFromFormat('Y-m-d', $birth_date_str);
+            $today = new DateTime();
+
+            if ($birth_date > $today) {
+                $this->error_message['birth_date'] = '生年月日が正しくありません'; // 未来日も無効
+            }
         }
 
         // 郵便番号
