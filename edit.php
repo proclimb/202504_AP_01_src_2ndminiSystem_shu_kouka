@@ -208,7 +208,7 @@ if (!$old) {
                 </div>
             </div>
             <button type="submit">更新</button>
-            <input type="button" value="ダッシュボードに戻る" onclick="history.back(-1)">
+            <input type="button" value="ダッシュボードに戻る" onclick="location.href='dashboard.php'">
         </form>
         <form action="delete.php" method="post" name="delete">
             <input type="hidden" name="id" value="<?php echo $old['id'] ?>">
