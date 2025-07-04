@@ -22,6 +22,22 @@ require_once 'Db.php';
 require_once 'User.php';
 require_once 'Address.php';
 require_once 'FileBlobHelper.php';
+require_once 'Validator.php';
+
+$validator = new Validator();
+// 生年月日の分解（birth_date → birth_year/month/day）
+if (isset($_POST['birth_date']) && preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $_POST['birth_date'], $matches)) {
+    $_POST['birth_year'] = $matches[1];
+    $_POST['birth_month'] = $matches[2];
+    $_POST['birth_day'] = $matches[3];
+}
+
+if (!$validator->validate($_POST)) {
+    $_SESSION['error_message'] = $validator->getErrors();
+    $_SESSION['old'] = $_POST;
+    header("Location: edit.php?id=" . urlencode($_POST['id']));
+    exit;
+}
 
 // 2. 入力データ取得
 // 2-1. ユーザーデータ取得
