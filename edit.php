@@ -114,12 +114,28 @@ if (!$old) {
                 </div>
                 <div>
                     <label>生年月日<span>必須</span></label>
+                    <?php
+                    $birthDate = $old['birth_date'] ?? '';
+                    $birthParts = explode('-', $birthDate);
+                    $birthYear = $birthParts[0] ?? '';
+                    $birthMonth = $birthParts[1] ?? '';
+                    $birthDay = $birthParts[2] ?? '';
+                    ?>
                     <input
                         type="text"
                         name="birth_date"
-                        value="<?php echo $old['birth_date'] ?? '' ?>"
+                        value="<?= htmlspecialchars($birthDate) ?>"
                         readonly
                         class="readonly-field">
+
+                    <!-- ↓ Validatorに渡すためのhiddenフィールド -->
+                    <input type="hidden" name="birth_year" value="<?= htmlspecialchars($birthYear) ?>">
+                    <input type="hidden" name="birth_month" value="<?= htmlspecialchars($birthMonth) ?>">
+                    <input type="hidden" name="birth_day" value="<?= htmlspecialchars($birthDay) ?>">
+
+                    <?php if (isset($error_message['birth_date'])) : ?>
+                        <div class="error"><?= htmlspecialchars($error_message['birth_date']) ?></div>
+                    <?php endif; ?>
                 </div>
                 <div>
                     <label>郵便番号<span>必須</span></label>
@@ -193,7 +209,6 @@ if (!$old) {
                         <img id="preview1" src="#" alt="プレビュー画像１" style="display: none; max-width: 200px; margin-top: 8px;">
                     </div>
                 </div>
-
                 <div>
                     <label>本人確認書類（裏）</label>
                     <input
