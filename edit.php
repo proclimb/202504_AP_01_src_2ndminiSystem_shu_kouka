@@ -205,6 +205,12 @@ if (!$old) {
                         id="document1"
                         accept="image/png, image/jpeg, image/jpg">
                     <span id="filename1" class="filename-display"></span>
+
+                    <!-- 🔽 エラーメッセージ表示 -->
+                    <?php if (isset($error_message['document1'])) : ?>
+                        <div class="error-msg2"><?= htmlspecialchars($error_message['document1']) ?></div>
+                    <?php endif; ?>
+
                     <div class="preview-container">
                         <img id="preview1" src="#" alt="プレビュー画像１" style="display: none; max-width: 200px; margin-top: 8px;">
                     </div>
@@ -217,6 +223,12 @@ if (!$old) {
                         id="document2"
                         accept="image/png, image/jpeg, image/jpg">
                     <span id="filename2" class="filename-display"></span>
+
+                    <!-- 🔽 エラーメッセージ表示 -->
+                    <?php if (isset($error_message['document2'])) : ?>
+                        <div class="error-msg2"><?= htmlspecialchars($error_message['document2']) ?></div>
+                    <?php endif; ?>
+
                     <div class="preview-container">
                         <img id="preview2" src="#" alt="プレビュー画像２" style="display: none; max-width: 200px; margin-top: 8px;">
                     </div>
