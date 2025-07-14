@@ -14,14 +14,14 @@ class Validator
             $this->error_message['name'] = '名前が入力されていません';
         } elseif (preg_match('/^[\s　]+$/u', $data['name'])) {
             $this->error_message['name'] = '名前に空白だけを入力することはできません';
+        } elseif (preg_match('/[ゐゑヰヱ]/u', $data['name'])) {
+            $this->error_message['name'] = '旧仮名遣い（ゐ・ゑなど）は使用できません';
         } elseif ($data['name'] !== trim($data['name'], " 　")) {
             $this->error_message['name'] = '名前の前後に空白を入れないでください';
         } elseif (mb_strlen($data['name']) > 20) {
             $this->error_message['name'] = '名前は20文字以内で入力してください';
         } elseif (!preg_match('/^[\p{Han}\p{Hiragana}\p{Katakana}ー－〜～ー々〆〤\s]+$/u', $data['name'])) {
             $this->error_message['name'] = '入力できるのは漢字・ひらがな・カタカナのみです';
-        } elseif (preg_match('/[ゐゑヰヱ]/u', $data['name'])) {
-            $this->error_message['name'] = '旧仮名遣い（ゐ・ゑなど）は使用できません';
         }
 
         // ふりがな
