@@ -212,3 +212,79 @@ var validateKana = function (val) {
         return true;
     }
 }
+
+function validateField(fieldName, value, inputElem) {
+    // 既存のエラーメッセージを消す
+    removeElementsByClass("error");
+    removeClass("error-form");
+
+    let error = "";
+
+    if (fieldName === "name") {
+        if (value.trim() === "") {
+            error = "名前が入力されていません";
+        } else if (/^[\s　]+$/.test(value)) {
+            error = "名前に空白だけを入力することはできません";
+        } else if (/[ゐゑヰヱ]/.test(value)) {
+            error = "旧仮名遣い（ゐ・ゑなど）は使用できません";
+        } else if (value !== value.trim()) {
+            error = "名前の前後に空白を入れないでください";
+        } else if (value.length > 20) {
+            error = "名前は20文字以内で入力してください";
+        } else if (!/^[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FFー－〜～ー々〆〤\s]+$/.test(value)) {
+            error = "入力できるのは漢字・ひらがな・カタカナのみです";
+        }
+    }
+
+    if (fieldName === "kana") {
+        if (value.trim() === "") {
+            error = "ふりがなが入力されていません";
+        } else if (!/^[ぁ-んー]+$/.test(value)) {
+            error = "ひらがなで入力してください";
+        } else if (value.length > 20) {
+            error = "ふりがなは20文字以内で入力してください";
+        }
+    }
+
+    if (fieldName === "postal_code") {
+        if (value.trim() === "") {
+            error = "郵便番号が入力されていません";
+        } else if (!/^\d{3}-\d{4}$/.test(value)) {
+            error = "郵便番号が正しくありません";
+        }
+    }
+
+    if (fieldName === "prefecture" || fieldName === "city_town") {
+        const pref = document.edit.prefecture.value;
+        const city = document.edit.city_town.value;
+        if (pref.trim() === "" || city.trim() === "") {
+            error = "住所(都道府県もしくは市区町村・番地)が入力されていません";
+        } else if (pref.length > 10) {
+            error = "都道府県は10文字以内で入力してください";
+        } else if (city.length > 50) {
+            error = "市区町村・番地もしくは建物名は50文字以内で入力してください";
+        }
+    }
+
+    if (fieldName === "tel") {
+        if (value.trim() === "") {
+            error = "電話番号が入力されていません";
+        } else if (!/^0\d{1,4}-\d{1,4}-\d{3,4}$/.test(value)) {
+            error = "電話番号は12~13桁で正しく入力してください";
+        } else if (value.length < 12 || value.length > 13) {
+            error = "電話番号は12~13桁で正しく入力してください";
+        }
+    }
+
+    if (fieldName === "email") {
+        if (value.trim() === "") {
+            error = "メールアドレスが入力されていません";
+        } else if (!/^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@[A-Za-z0-9_.-]+\.[A-Za-z0-9]+$/.test(value)) {
+            error = "有効なメールアドレスを入力してください";
+        }
+    }
+
+    if (error) {
+        errorElement(inputElem, error);
+    }
+}
