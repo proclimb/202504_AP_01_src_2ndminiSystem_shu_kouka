@@ -214,9 +214,14 @@ var validateKana = function (val) {
 }
 
 function validateField(fieldName, value, inputElem) {
-    // 既存のエラーメッセージを消す
-    removeElementsByClass("error");
-    removeClass("error-form");
+    // 他のエラーメッセージを消さないように修正
+
+    // 該当項目の既存エラーメッセージを探す
+    const oldError = inputElem.parentNode.querySelector(".error");
+    if (oldError) {
+        oldError.remove();  // そのフィールドのエラーだけ消す
+    }
+    inputElem.classList.remove("error-form");  // そのフィールドだけ
 
     let error = "";
 
@@ -234,6 +239,15 @@ function validateField(fieldName, value, inputElem) {
         } else if (!/^[\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FFー－〜～ー々〆〤\s]+$/.test(value)) {
             error = "入力できるのは漢字・ひらがな・カタカナのみです";
         }
+        const errDiv = document.getElementById("error_name");
+        if (error) {
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            inputElem.classList.remove("error-form");
+        }
+        return;
     }
 
     if (fieldName === "kana") {
@@ -244,26 +258,60 @@ function validateField(fieldName, value, inputElem) {
         } else if (value.length > 20) {
             error = "ふりがなは20文字以内で入力してください";
         }
+        const errDiv = document.getElementById("error_kana");
+        if (error) {
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            inputElem.classList.remove("error-form");
+        }
+        return;
     }
 
     if (fieldName === "postal_code") {
+        const errDiv = document.getElementById("error_postal_code");
+
         if (value.trim() === "") {
             error = "郵便番号が入力されていません";
         } else if (!/^\d{3}-\d{4}$/.test(value)) {
             error = "郵便番号が正しくありません";
         }
+
+        if (error) {
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";  // 正しい場合だけ消す
+            inputElem.classList.remove("error-form");
+        }
+        return;
     }
 
     if (fieldName === "prefecture" || fieldName === "city_town") {
-        const pref = document.edit.prefecture.value;
-        const city = document.edit.city_town.value;
-        if (pref.trim() === "" || city.trim() === "") {
+        const errDiv = document.getElementById("error_address");
+
+        const pref = document.edit.prefecture.value.trim();
+        const city = document.edit.city_town.value.trim();
+
+        if (pref === "" || city === "") {
             error = "住所(都道府県もしくは市区町村・番地)が入力されていません";
         } else if (pref.length > 10) {
             error = "都道府県は10文字以内で入力してください";
         } else if (city.length > 50) {
             error = "市区町村・番地もしくは建物名は50文字以内で入力してください";
         }
+
+        if (error) {
+            errDiv.textContent = error;
+            if (fieldName === "prefecture") inputElem.classList.add("error-form");
+            if (fieldName === "city_town") inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            document.edit.prefecture.classList.remove("error-form");
+            document.edit.city_town.classList.remove("error-form");
+        }
+        return;
     }
 
     if (fieldName === "tel") {
@@ -271,9 +319,16 @@ function validateField(fieldName, value, inputElem) {
             error = "電話番号が入力されていません";
         } else if (!/^0\d{1,4}-\d{1,4}-\d{3,4}$/.test(value)) {
             error = "電話番号は12~13桁で正しく入力してください";
-        } else if (value.length < 12 || value.length > 13) {
-            error = "電話番号は12~13桁で正しく入力してください";
         }
+        const errDiv = document.getElementById("error_tel");
+        if (error) {
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            inputElem.classList.remove("error-form");
+        }
+        return;
     }
 
     if (fieldName === "email") {
@@ -282,9 +337,25 @@ function validateField(fieldName, value, inputElem) {
         } else if (!/^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@[A-Za-z0-9_.-]+\.[A-Za-z0-9]+$/.test(value)) {
             error = "有効なメールアドレスを入力してください";
         }
+        const errDiv = document.getElementById("error_email");
+        if (error) {
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            inputElem.classList.remove("error-form");
+        }
+        return;
     }
 
     if (error) {
         errorElement(inputElem, error);
     }
+}
+
+
+function setError(fieldId, message, force = true) {
+    const errorSpan = document.getElementById(`${fieldId}Error`);
+    if (!force && errorSpan.textContent) return; // 既に表示されてるなら上書きしない
+    errorSpan.textContent = message;
 }
