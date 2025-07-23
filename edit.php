@@ -49,6 +49,7 @@ if (!$old) {
     <title>mini System</title>
     <link rel="stylesheet" href="style_new.css">
     <script src="postalcodesearch.js"></script>
+    <script src="contact.js?v=20250715" defer></script>
 </head>
 
 <body>
@@ -71,10 +72,13 @@ if (!$old) {
                         type="text"
                         name="name"
                         placeholder="例）山田太郎"
-                        value="<?= htmlspecialchars($old['name'] ?? '') ?>">
-                    <?php if (isset($error_message['name'])) : ?>
-                        <div class="error"><?= htmlspecialchars($error_message['name']) ?></div>
-                    <?php endif; ?>
+                        value="<?= htmlspecialchars($old['name'] ?? '') ?>"
+                        onblur="validateField('name', this.value, this)">
+                    <div class="error-msg" id="error_name">
+                        <?php if (isset($error_message['name'])) :
+                            echo htmlspecialchars($error_message['name']);
+                        endif; ?>
+                    </div>
                 </div>
                 <div>
                     <label>ふりがな<span>必須</span></label>
@@ -82,10 +86,13 @@ if (!$old) {
                         type="text"
                         name="kana"
                         placeholder="例）やまだたろう"
-                        value="<?= htmlspecialchars($old['kana'] ?? '') ?>">
-                    <?php if (isset($error_message['kana'])) : ?>
-                        <div class="error"><?= htmlspecialchars($error_message['kana']) ?></div>
-                    <?php endif; ?>
+                        value="<?= htmlspecialchars($old['kana'] ?? '') ?>"
+                        onblur="validateField('kana', this.value, this)">
+                    <div class="error-msg" id="error_kana">
+                        <?php if (isset($error_message['kana'])) :
+                            echo htmlspecialchars($error_message['kana']);
+                        endif; ?>
+                    </div>
                 </div>
                 <div>
                     <label>性別<span>必須</span></label>
@@ -146,10 +153,16 @@ if (!$old) {
                             name="postal_code"
                             id="postal_code"
                             placeholder="例）100-0001"
-                            value="<?= htmlspecialchars($old['postal_code'] ?? '') ?>">
+                            value="<?= htmlspecialchars($old['postal_code'] ?? '') ?>"
+                            onblur="validateField('postal_code', this.value, this)">
                         <button type="button"
                             class="postal-code-search"
                             id="searchAddressBtn">住所検索</button>
+                    </div>
+                    <div class="error-msg2" id="error_postal_code">
+                        <?php if (isset($error_message['postal_code'])) : ?>
+                            <?= htmlspecialchars($error_message['postal_code']) ?>
+                        <?php endif ?>
                     </div>
                 </div>
                 <div>
@@ -159,21 +172,25 @@ if (!$old) {
                         name="prefecture"
                         id="prefecture"
                         placeholder="都道府県"
-                        value="<?= htmlspecialchars($old['prefecture'] ?? '') ?>">
+                        value="<?= htmlspecialchars($old['prefecture'] ?? '') ?>"
+                        onblur="validateField('prefecture', this.value, this)">
                     <input
                         type="text"
                         name="city_town"
                         id="city_town"
                         placeholder="市区町村・番地"
-                        value="<?= htmlspecialchars($old['city_town'] ?? '') ?>">
+                        value="<?= htmlspecialchars($old['city_town'] ?? '') ?>"
+                        onblur="validateField('city_town', this.value, this)">
                     <input
                         type="text"
                         name="building"
                         placeholder="建物名・部屋番号  **省略可**"
                         value="<?= htmlspecialchars($old['building'] ?? '') ?>">
-                    <?php if (isset($error_message['address'])) : ?>
-                        <div class="error"><?= htmlspecialchars($error_message['address']) ?></div>
-                    <?php endif; ?>
+                    <div class="error-msg" id="error_address">
+                        <?php if (isset($error_message['address'])) : ?>
+                            <?= htmlspecialchars($error_message['address']) ?>
+                        <?php endif ?>
+                    </div>
                 </div>
                 <div>
                     <label>電話番号<span>必須</span></label>
@@ -181,10 +198,13 @@ if (!$old) {
                         type="text"
                         name="tel"
                         placeholder="例）000-000-0000"
-                        value="<?= htmlspecialchars($old['tel'] ?? '') ?>">
-                    <?php if (isset($error_message['tel'])) : ?>
-                        <div class="error"><?= htmlspecialchars($error_message['tel']) ?></div>
-                    <?php endif; ?>
+                        value="<?= htmlspecialchars($old['tel'] ?? '') ?>"
+                        onblur="validateField('tel', this.value, this)">
+                    <div class="error-msg" id="error_tel">
+                        <?php if (isset($error_message['tel'])) :
+                            echo htmlspecialchars($error_message['tel']);
+                        endif; ?>
+                    </div>
                 </div>
                 <div>
                     <label>メールアドレス<span>必須</span></label>
@@ -192,10 +212,13 @@ if (!$old) {
                         type="text"
                         name="email"
                         placeholder="例）guest@example.com"
-                        value="<?= htmlspecialchars($old['email'] ?? '') ?>">
-                    <?php if (isset($error_message['email'])) : ?>
-                        <div class="error"><?= htmlspecialchars($error_message['email']) ?></div>
-                    <?php endif; ?>
+                        value="<?= htmlspecialchars($old['email'] ?? '') ?>"
+                        onblur="validateField('email', this.value, this)">
+                    <div class="error-msg" id="error_email">
+                        <?php if (isset($error_message['email'])) :
+                            echo htmlspecialchars($error_message['email']);
+                        endif; ?>
+                    </div>
                 </div>
                 <div>
                     <label>本人確認書類（表）</label>
