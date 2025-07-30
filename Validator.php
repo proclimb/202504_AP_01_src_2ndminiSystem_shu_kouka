@@ -27,8 +27,14 @@ class Validator
         // ふりがな
         if (empty($data['kana'])) {
             $this->error_message['kana'] = 'ふりがなが入力されていません';
+        } elseif (preg_match('/[ゐゑヰヱ]/u', $data['kana'])) {
+            $this->error_message['kana'] = '旧仮名遣い（ゐ・ゑなど）は使用できません';
+        } elseif (preg_match('/^[\s　]|[\s　]$/u', $data['kana'])) {
+            $this->error_message['kana'] = 'ふりがなの前後に空白を入れないでください';
+        } elseif (preg_match('/^[\s　]+$/u', $data['kana'])) {
+            $this->error_message['kana'] = 'ふりがなに空白だけを入力することはできません';
         } elseif (preg_match('/[^ぁ-んー]/u', $data['kana'])) {
-            $this->error_message['kana'] = 'ひらがなで入力してください';
+            $this->error_message['kana'] = 'ふりがなで入力してください';
         } elseif (mb_strlen($data['kana']) > 20) {
             $this->error_message['kana'] = 'ふりがなは20文字以内で入力してください';
         }
@@ -38,14 +44,14 @@ class Validator
         if (empty($data['birth_year']) || empty($data['birth_month']) || empty($data['birth_day'])) {
             $this->error_message['birth_date'] = '生年月日が入力されていません';
         } elseif (!$this->isValidDate($data['birth_year'] ?? '', $data['birth_month'] ?? '', $data['birth_day'] ?? '')) {
-            $this->error_message['birth_date'] = '生年月日が正しくありません';
+            $this->error_message['birth_date'] = '生年月日が正しくありません（存在しない日付です）';
         } else {
             $birth_date_str = sprintf('%04d-%02d-%02d', $data['birth_year'], $data['birth_month'], $data['birth_day']);
             $birth_date = DateTime::createFromFormat('Y-m-d', $birth_date_str);
             $today = new DateTime();
 
             if ($birth_date > $today) {
-                $this->error_message['birth_date'] = '生年月日が正しくありません'; // 未来日も無効
+                $this->error_message['birth_date'] = '生年月日に未来日は指定できません'; // 未来日も無効
             }
         }
 
@@ -53,7 +59,7 @@ class Validator
         if (empty($data['postal_code'])) {
             $this->error_message['postal_code'] = '郵便番号が入力されていません';
         } elseif (!preg_match('/^[0-9]{3}-[0-9]{4}$/', $data['postal_code'] ?? '')) {
-            $this->error_message['postal_code'] = '郵便番号が正しくありません';
+            $this->error_message['postal_code'] = '郵便番号は「XXX-XXXX」の形式で入力してください';
         }
 
         // 住所
@@ -73,7 +79,7 @@ class Validator
             mb_strlen($data['tel']) < 12 ||
             mb_strlen($data['tel']) > 13
         ) {
-            $this->error_message['tel'] = '電話番号は12~13桁で正しく入力してください';
+            $this->error_message['tel'] = '電話番号は12~13桁(例:XXX-XXXX-XXXX)で正しく入力してください';
         }
 
         // メールアドレス
@@ -87,14 +93,14 @@ class Validator
         if (!isset($_FILES['document1']) || $_FILES['document1']['error'] === UPLOAD_ERR_NO_FILE) {
             $this->error_message['document1'] = '本人確認書類（表）を入れてください';
         } elseif (!in_array(mime_content_type($_FILES['document1']['tmp_name']), ['image/png', 'image/jpeg'])) {
-            $this->error_message['document1'] = 'ファイル形式はPNG またはJPEG のみ許可されています';
+            $this->error_message['document1'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
         }
 
         // 本人確認書類（裏）
         if (!isset($_FILES['document2']) || $_FILES['document2']['error'] === UPLOAD_ERR_NO_FILE) {
             $this->error_message['document2'] = '本人確認書類（裏）を入れてください';
         } elseif (!in_array(mime_content_type($_FILES['document2']['tmp_name']), ['image/png', 'image/jpeg'])) {
-            $this->error_message['document2'] = 'ファイル形式はPNG またはJPEG のみ許可されています';
+            $this->error_message['document2'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
         }
 
         return empty($this->error_message);

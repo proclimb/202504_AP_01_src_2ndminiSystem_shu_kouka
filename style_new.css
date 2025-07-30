@@ -435,6 +435,10 @@ textarea+div {
 .error-msg2 {
     color: red;
     margin-left: 166px;
+    float: right;
+    width: 420px;
+    color: red;
+    margin-bottom: -10px;
 }
 
 .birth-selects {

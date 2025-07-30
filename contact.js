@@ -253,8 +253,12 @@ function validateField(fieldName, value, inputElem) {
     if (fieldName === "kana") {
         if (value.trim() === "") {
             error = "ふりがなが入力されていません";
+        } else if (/[ゐゑヰヱ]/.test(value)) {
+            error = "旧仮名遣い（ゐ・ゑなど）は使用できません";
+        } else if (value !== value.trim()) {
+            error = "ふりがなの前後に空白を入れないでください";
         } else if (!/^[ぁ-んー]+$/.test(value)) {
-            error = "ひらがなで入力してください";
+            error = "ふりがなで入力してください";
         } else if (value.length > 20) {
             error = "ふりがなは20文字以内で入力してください";
         }
@@ -275,7 +279,7 @@ function validateField(fieldName, value, inputElem) {
         if (value.trim() === "") {
             error = "郵便番号が入力されていません";
         } else if (!/^\d{3}-\d{4}$/.test(value)) {
-            error = "郵便番号が正しくありません";
+            error = "郵便番号は「XXX-XXXX」の形式で入力してください";
         }
 
         if (error) {
@@ -318,7 +322,7 @@ function validateField(fieldName, value, inputElem) {
         if (value.trim() === "") {
             error = "電話番号が入力されていません";
         } else if (!/^0\d{1,4}-\d{1,4}-\d{3,4}$/.test(value)) {
-            error = "電話番号は12~13桁で正しく入力してください";
+            error = "電話番号は12~13桁(例:XXX-XXXX-XXXX)で正しく入力してください";
         }
         const errDiv = document.getElementById("error_tel");
         if (error) {
