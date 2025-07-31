@@ -72,8 +72,8 @@ function validate() {
         if (!validateMail(document.edit.email.value)) {
             errorElement(document.edit.email, "メールアドレスが正しくありません");
             flag = false;
-        } else if (document.edit.email.value.length > 60) {
-            errorElement(document.edit.email, "メールアドレスは60文字以内で入力してください");
+        } else if (document.edit.email.value.length > 64) {
+            errorElement(document.edit.email, "メールアドレスは64文字以内で入力してください");
             flag = false;
         }
     }
@@ -343,8 +343,8 @@ function validateField(fieldName, value, inputElem) {
             error = "メールアドレスが入力されていません";
         } else if (!/^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@[A-Za-z0-9_.-]+\.[A-Za-z0-9]+$/.test(value)) {
             error = "有効なメールアドレスを入力してください";
-        } else if (value.length > 60) {
-            error = "メールアドレスは60文字以内で入力してください";
+        } else if (value.length > 64) {
+            error = "メールアドレスは64文字以内で入力してください";
         }
         const errDiv = document.getElementById("error_email");
         if (error) {
