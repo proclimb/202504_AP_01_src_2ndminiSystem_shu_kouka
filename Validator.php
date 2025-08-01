@@ -69,6 +69,16 @@ class Validator
             $this->error_message['address'] = '都道府県は10文字以内で入力してください';
         } elseif (mb_strlen($data['city_town']) > 50 || mb_strlen($data['building']) > 50) {
             $this->error_message['address'] = '市区町村・番地もしくは建物名は50文字以内で入力してください';
+        } else {
+            // 郵便番号と住所の組み合わせをDBで確認
+            // DB接続のためにグローバル変数を使用（globalと宣言することによって、外部の$pdo変数を参照できるようにする）
+            global $pdo;
+            if (!isset($this->error_message['postal_code']) || !isset($this->error_message['address'])) {
+                $checkAddress = new UserAddress($pdo);
+                if (!$checkAddress->checkAddressMatch($data['postal_code'], $data['prefecture'], $data['city_town'])) {
+                    $this->error_message['address'] = '郵便番号と住所の組み合わせが一致しません';
+                }
+            }
         }
 
         // 電話番号
