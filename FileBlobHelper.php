@@ -34,9 +34,9 @@ class FileBlobHelper
         }
 
         // 例：サイズ制限をかけたい場合はここにチェックを入れる
-        // if ($fileArr['size'] > 5 * 1024 * 1024) {
-        //     return null;
-        // }
+        if ($fileArr['size'] > 2 * 1024 * 1024) {
+            return null;
+        }
 
         // file_get_contents で BLOB として読み込む
         $blob = file_get_contents($fileArr['tmp_name']);

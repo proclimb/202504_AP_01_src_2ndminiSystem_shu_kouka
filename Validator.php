@@ -96,6 +96,8 @@ class Validator
             $this->error_message['document1'] = '本人確認書類（表）を入れてください';
         } elseif (!in_array(mime_content_type($_FILES['document1']['tmp_name']), ['image/png', 'image/jpeg'])) {
             $this->error_message['document1'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
+        } elseif ($_FILES['document1']['size'] > 2 * 1024 * 1024) {
+            $this->error_message['document1'] = '2MB以上はアップロードできません';
         }
 
         // 本人確認書類（裏）
@@ -103,6 +105,8 @@ class Validator
             $this->error_message['document2'] = '本人確認書類（裏）を入れてください';
         } elseif (!in_array(mime_content_type($_FILES['document2']['tmp_name']), ['image/png', 'image/jpeg'])) {
             $this->error_message['document2'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
+        } elseif ($_FILES['document2']['size'] > 2 * 1024 * 1024) {
+            $this->error_message['document2'] = '2MB以上はアップロードできません';
         }
 
         return empty($this->error_message);

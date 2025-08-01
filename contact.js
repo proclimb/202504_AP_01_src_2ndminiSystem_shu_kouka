@@ -87,6 +87,9 @@ function validate() {
         if (type1 !== "image/png" && type1 !== "image/jpeg") {
             errorElement(fileInput1, "ファイル形式は PNG または JPEG のみ許可されています");
             flag = false;
+        } else if (file1.size > 2 * 1024 * 1024) {
+            errorElement(fileInput1, "2MB以上はアップロードできません");
+            flag = false;
         }
     }
     // document2 のチェック
@@ -96,6 +99,9 @@ function validate() {
         var type2 = file2.type;
         if (type2 !== "image/png" && type2 !== "image/jpeg") {
             errorElement(fileInput2, "ファイル形式は PNG または JPEG のみ許可されています");
+            flag = false;
+        } else if (file2.size > 2 * 1024 * 1024) {
+            errorElement(fileInput2, "2MB以上はアップロードできません");
             flag = false;
         }
     }
