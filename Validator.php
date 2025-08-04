@@ -1,4 +1,6 @@
 <?php
+require_once 'Db.php';
+require_once 'Address.php';
 
 class Validator
 {
@@ -16,7 +18,7 @@ class Validator
             $this->error_message['name'] = '名前に空白だけを入力することはできません';
         } elseif (preg_match('/[ゐゑヰヱ]/u', $data['name'])) {
             $this->error_message['name'] = '旧仮名遣い（ゐ・ゑなど）は使用できません';
-        } elseif ($data['name'] !== trim($data['name'], " 　")) {
+        } elseif (preg_match('/^[\s　]|[\s　]$/u', $data['name'])) {
             $this->error_message['name'] = '名前の前後に空白を入れないでください';
         } elseif (mb_strlen($data['name']) > 20) {
             $this->error_message['name'] = '名前は20文字以内で入力してください';
@@ -101,22 +103,28 @@ class Validator
             $this->error_message['email'] = 'メールアドレスは64文字以内で入力してください';
         }
 
-        // 本人確認書類（表）
-        if (!isset($_FILES['document1']) || $_FILES['document1']['error'] === UPLOAD_ERR_NO_FILE) {
-            $this->error_message['document1'] = '本人確認書類（表）を入れてください';
-        } elseif (!in_array(mime_content_type($_FILES['document1']['tmp_name']), ['image/png', 'image/jpeg'])) {
-            $this->error_message['document1'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
-        } elseif ($_FILES['document1']['size'] > 2 * 1024 * 1024) {
-            $this->error_message['document1'] = '2MB以上はアップロードできません';
-        }
+        // 本人確認書類のチェック
+        // input.php ではスキップするため、呼び出し元を判定
+        $current_script = basename($_SERVER['SCRIPT_NAME']);
 
-        // 本人確認書類（裏）
-        if (!isset($_FILES['document2']) || $_FILES['document2']['error'] === UPLOAD_ERR_NO_FILE) {
-            $this->error_message['document2'] = '本人確認書類（裏）を入れてください';
-        } elseif (!in_array(mime_content_type($_FILES['document2']['tmp_name']), ['image/png', 'image/jpeg'])) {
-            $this->error_message['document2'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
-        } elseif ($_FILES['document2']['size'] > 2 * 1024 * 1024) {
-            $this->error_message['document2'] = '2MB以上はアップロードできません';
+        if ($current_script === 'edit.php') {
+            // 本人確認書類（表）
+            if (!isset($_FILES['document1']) || $_FILES['document1']['error'] === UPLOAD_ERR_NO_FILE) {
+                $this->error_message['document1'] = '本人確認書類（表）を入れてください';
+            } elseif (!in_array(mime_content_type($_FILES['document1']['tmp_name']), ['image/png', 'image/jpeg'])) {
+                $this->error_message['document1'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
+            } elseif ($_FILES['document1']['size'] > 2 * 1024 * 1024) {
+                $this->error_message['document1'] = '2MB以上はアップロードできません';
+            }
+
+            // 本人確認書類（裏）
+            if (!isset($_FILES['document2']) || $_FILES['document2']['error'] === UPLOAD_ERR_NO_FILE) {
+                $this->error_message['document2'] = '本人確認書類（裏）を入れてください';
+            } elseif (!in_array(mime_content_type($_FILES['document2']['tmp_name']), ['image/png', 'image/jpeg'])) {
+                $this->error_message['document2'] = 'ファイル形式は PNG,JPEG,jpg のいずれかのみ許可されています';
+            } elseif ($_FILES['document2']['size'] > 2 * 1024 * 1024) {
+                $this->error_message['document2'] = '2MB以上はアップロードできません';
+            }
         }
 
         return empty($this->error_message);
