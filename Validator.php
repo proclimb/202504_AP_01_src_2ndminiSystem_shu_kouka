@@ -97,10 +97,10 @@ class Validator
         // メールアドレス
         if (empty($data['email'])) {
             $this->error_message['email'] = 'メールアドレスが入力されていません';
-        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-            $this->error_message['email'] = '有効なメールアドレスを入力してください';
         } elseif (mb_strlen($data['email']) > 64) {
             $this->error_message['email'] = 'メールアドレスは64文字以内で入力してください';
+        } elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $this->error_message['email'] = '有効なメールアドレスを入力してください';
         }
 
         // 本人確認書類のチェック
