@@ -227,7 +227,8 @@ session_destroy();
                         type="text"
                         name="building"
                         placeholder="建物名・部屋番号  **省略可**"
-                        value="<?= htmlspecialchars($old['building'] ?? '') ?>">
+                        value="<?= htmlspecialchars($old['building'] ?? '') ?>"
+                        onblur="validateField('building', this.value, this)">
                     <div class="error-msg" id="error_address">
                         <?php if (isset($error_message['address'])) : ?>
                             <?= htmlspecialchars($error_message['address']) ?>

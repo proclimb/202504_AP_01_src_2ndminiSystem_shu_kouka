@@ -327,6 +327,19 @@ function validateField(fieldName, value, inputElem) {
         return;
     }
 
+    if (fieldName === "building") {
+        const errDiv = document.getElementById("error_address");
+        if (value.length > 50) {
+            error = "市区町村・番地もしくは建物名は50文字以内で入力してください";
+            errDiv.textContent = error;
+            inputElem.classList.add("error-form");
+        } else {
+            errDiv.textContent = "";
+            inputElem.classList.remove("error-form");
+        }
+        return;
+    }
+
     if (fieldName === "tel") {
         if (value.trim() === "") {
             error = "電話番号が入力されていません";
