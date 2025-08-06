@@ -343,7 +343,7 @@ function validateField(fieldName, value, inputElem) {
     if (fieldName === "tel") {
         if (value.trim() === "") {
             error = "電話番号が入力されていません";
-        } else if (!/^0\d{1,4}-\d{1,4}-\d{3,4}$/.test(value)) {
+        } else if (!/^0\d{1,4}-\d{1,4}-\d{3,4}$/.test(value) || value.length < 12 || value.length > 13) {
             error = "電話番号は12~13桁(例:XXX-XXXX-XXXX)で正しく入力してください";
         }
         const errDiv = document.getElementById("error_tel");
