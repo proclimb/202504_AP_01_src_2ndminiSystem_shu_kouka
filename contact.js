@@ -360,7 +360,7 @@ function validateField(fieldName, value, inputElem) {
     if (fieldName === "email") {
         if (value.trim() === "") {
             error = "メールアドレスが入力されていません";
-        } else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)) {
+        } else if (!/^[A-Za-z0-9](?!.*\.\.)[A-Za-z0-9._%+-]*@[A-Za-z0-9](?!.*\.\.)([A-Za-z0-9-]*[A-Za-z0-9])(\.[A-Za-z]{2,})+$/.test(value)) {
             error = "有効なメールアドレスを入力してください";
         } else if (value.length > 64) {
             error = "メールアドレスは64文字以内で入力してください";
