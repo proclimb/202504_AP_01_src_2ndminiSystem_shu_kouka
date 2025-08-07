@@ -107,7 +107,7 @@ class Validator
         // input.php ではスキップするため、呼び出し元を判定
         $current_script = basename($_SERVER['SCRIPT_NAME']);
 
-        if ($current_script === 'edit.php') {
+        if (in_array($current_script, ['edit.php', 'update.php'])) {
             // 本人確認書類（表）
             if (!isset($_FILES['document1']) || $_FILES['document1']['error'] === UPLOAD_ERR_NO_FILE) {
                 $this->error_message['document1'] = '本人確認書類（表）を入れてください';
