@@ -387,3 +387,33 @@ function setError(fieldId, message, force = true) {
     if (!force && errorSpan.textContent) return; // 既に表示されてるなら上書きしない
     errorSpan.textContent = message;
 }
+
+// 本人確認書類プレビュー表示
+function previewImage(inputId, previewId, filenameId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+    const filenameSpan = document.getElementById(filenameId);
+
+    input.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+            filenameSpan.textContent = file.name;
+        } else {
+            preview.src = "#";
+            preview.style.display = "none";
+            filenameSpan.textContent = "";
+        }
+    });
+}
+
+// 表・裏それぞれに適用
+document.addEventListener("DOMContentLoaded", function () {
+    previewImage("document1", "preview1", "filename1");
+    previewImage("document2", "preview2", "filename2");
+});

@@ -235,7 +235,11 @@ if (!$old) {
                     <?php endif; ?>
 
                     <div class="preview-container">
-                        <img id="preview1" src="#" alt="プレビュー画像１" style="display: none; max-width: 200px; margin-top: 8px;">
+                        <?php if ($doc1_preview): ?>
+                            <img id="preview1" src="<?= $doc1_preview ?>" alt="本人確認書類（表）" style="max-width:200px">
+                        <?php else: ?>
+                            <img id="preview1" src="#" alt="プレビュー画像１" style="display:none; max-width:200px">
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div>
@@ -253,7 +257,11 @@ if (!$old) {
                     <?php endif; ?>
 
                     <div class="preview-container">
-                        <img id="preview2" src="#" alt="プレビュー画像２" style="display: none; max-width: 200px; margin-top: 8px;">
+                        <?php if ($doc2_preview): ?>
+                            <img id="preview2" src="<?= $doc2_preview ?>" alt="本人確認書類（裏）" style="max-width:200px">
+                        <?php else: ?>
+                            <img id="preview2" src="#" alt="プレビュー画像２" style="display:none; max-width:200px">
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

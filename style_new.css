@@ -692,6 +692,27 @@ input.readonly-field[type="text"] {
     color: #007ea8;
 }
 
+/* 本人確認書類のプレビュー画像用 */
+.preview-container {
+    clear: both;
+    /* ← float解除でエラーメッセージと重ならないように */
+    margin-left: 166px;
+    /* ← ラベル幅に合わせて右に寄せる */
+    margin-top: 40px;
+    width: 420px;
+    /* ← エラーと同じ幅に揃える */
+}
+
+.preview-container img {
+    display: block;
+    max-width: 200px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px;
+    background: #fafafa;
+}
+
 /* -------------------------------------------------------------------
    ↑ ここまで変更・追加箇所
    ------------------------------------------------------------------- */
